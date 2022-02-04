@@ -2,7 +2,7 @@
 
 export version=v8.1.1
 export os=linux  # 'darwin' 'linux' or 'windows'
-export arch=arm. # '386' 'arm' on linux or 'amd64' for all distros
+export arch=arm # '386' 'arm' on linux or 'amd64' for all distros
 
 TELEPORT_PACKAGE=teleport-$version-$os-$arch-bin.tar.gz
 
