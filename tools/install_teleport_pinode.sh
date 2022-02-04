@@ -1,4 +1,6 @@
 #!/bin/bash
+# This if for installation on machines that do not already have Teleport as part of the repo. For future, we could 
+# to a test and automate the repo addition and installation OR the tarball, similar to how docker install script works.
 
 export version=v8.1.1 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
 export os=$(uname -s) | awk '{print tolower($0)}'  # 'darwin' 'linux' or 'windows'
@@ -37,11 +39,11 @@ function get_user_input() {
   echo "sudo tctl tokens add --type=node"
   echo "==============================="
   echo " "
-  echo "What is the domain name or for the Auth Server?: "
+  echo "What is the domain name or IP for the Auth Server?: "
   echo "   e.g., teleport.example.com  (note: WITHOUT http://) "  
   read -r AUTH_SERVER
   echo " "
-  echo "What is the name of this pi node?: "
+  echo "What is the name of this RPi node?: "
   read -r NODE_NAME
   echo " "
   echo "Enter the auth token: "
@@ -87,7 +89,8 @@ teleport:
   auth_token: "${AUTH_TOKEN}"
   auth_servers:
   - "${AUTH_SERVER}:${PORT}"
-  #advertise_ip: $(hostname -I)
+  # advertise_ip is for internal networks and not using a tunnel. Easiest to just use tunnel
+  #advertise_ip: $(hostname --all-ip-addresses | awk '{print $1}')
 auth_service:
   enabled: false
 proxy_service:
@@ -101,7 +104,7 @@ ssh_service:
     command: [hostname]
     period: 10m0s
   - name: IP
-    command: ["/usr/bin/hostname", "-I"]
+    command: ["/bin/sh", "-c", "hostname --all-ip-addresses | awk '{print $1}'"]
     period: 10m0s
   - name: uptime
     command: ["/usr/bin/uptime", "-p"]
