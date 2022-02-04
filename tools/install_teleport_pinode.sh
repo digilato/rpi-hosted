@@ -1,12 +1,13 @@
 #!/bin/bash
 
-export version=v8.1.1
-export os=linux  # 'darwin' 'linux' or 'windows'
-export arch=arm # '386' 'arm' on linux or 'amd64' for all distros
+export version=v8.1.1 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
+export os=$(uname -s) | awk '{print tolower($0)}'  # 'darwin' 'linux' or 'windows'
+# TODO: Automate this portion.
+export arch=arm # '386' 'arm' on linux or 'amd64' for all distros 
 
 TELEPORT_PACKAGE=teleport-$version-$os-$arch-bin.tar.gz
 
-AUTH_SERVER=teleport.example.com
+AUTH_SERVER=teleport.example.com # Used to be manual, now prompts below. TODO: For personal use, could use this as defualt
 # Use port 3025 if internal, or port 443 for external v8+ (or 3080 for older port dependent setup)
 PORT=3080
 
@@ -35,24 +36,27 @@ function get_user_input() {
   echo "Ensure you have run the following in the main teleport server to get the auth token and ca-pin."
   echo "sudo tctl tokens add --type=node"
   echo "==============================="
-
+  echo " "
   echo "What is the domain name or for the Auth Server?: "
   echo "   e.g., teleport.example.com  (note: WITHOUT http://) "  
   read -r AUTH_SERVER
+  echo " "
   echo "What is the name of this pi node?: "
   read -r NODE_NAME
+  echo " "
   echo "Enter the auth token: "
   read -r AUTH_TOKEN
+  echo " "
   echo "Enter ca-pin (eg.'sha256:2154125...'): "
   read -r CA_PIN
 
-  echo ""
+  echo "Auth Server: $AUTH_SERVER"
   echo "Node Name: $NODE_NAME"
   echo "Auth Token: $AUTH_TOKEN"
   echo "CA Pin: $CA_PIN"
   echo ""
   echo "This script will delete your existing teleport install?"
-  echo "Are you sure these are you settings? (y\n)"
+  echo "Continue with these settings? (y\n)"
 
   read -r RESPONSE
   if [ "$RESPONSE" = "n" ] || [ "$RESPONSE" = "N" ]; then
