@@ -3,7 +3,7 @@
 # to a test and automate the repo addition and installation OR the tarball, similar to how docker install script works.
 
 export version=v8.1.1 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
-opsys=$(uname -s) | awk '{print tolower($0)}'  # 'darwin' 'linux' or 'windows'
+opsys=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
 export opsys
 # TODO: Automate this portion.
 export arch=arm # '386' 'arm' on linux or 'amd64' for all distros 
