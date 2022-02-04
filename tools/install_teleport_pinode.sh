@@ -3,11 +3,12 @@
 # to a test and automate the repo addition and installation OR the tarball, similar to how docker install script works.
 
 export version=v8.1.1 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
-export platform=$(uname -s) | awk '{print tolower($0)}'  # 'darwin' 'linux' or 'windows'
+os=$(uname -s) | awk '{print tolower($0)}'  # 'darwin' 'linux' or 'windows'
+export os
 # TODO: Automate this portion.
 export arch=arm # '386' 'arm' on linux or 'amd64' for all distros 
 
-TELEPORT_PACKAGE=teleport-$version-$platform-$arch-bin.tar.gz
+TELEPORT_PACKAGE=teleport-$version-$os-$arch-bin.tar.gz
 
 AUTH_SERVER=teleport.example.com # Used to be manual, now prompts below. TODO: For personal use, could use this as defualt
 # Use port 3025 if internal, or port 443 for external v8+ (or 3080 for older port dependent setup)
@@ -19,13 +20,13 @@ PORT=3080
 
 function check_root_user() {
   if [ "$EUID" -ne 0 ]; then
-    echo "This script requires sudo/root permissions"
+    printf "This script requires sudo/root permissions"
     exit
   fi
 }
 
 function clean_teleport() {
-  echo "Removing existing teleport install"
+  printf "Removing existing teleport install"
   rm -rf /var/lib/teleport
   rm /usr/local/bin/teleport
   rm /etc/teleport.yaml
@@ -34,31 +35,31 @@ function clean_teleport() {
 }
 
 function get_user_input() {
-  echo "==============================="
-  echo "Ensure you have run the following in the main teleport server to get the auth token and ca-pin."
-  echo "sudo tctl tokens add --type=node"
-  echo "==============================="
-  echo " "
-  echo "What is the domain name or IP for the Auth Server?: "
-  echo "   e.g., teleport.example.com  (note: WITHOUT http://) "  
+  printf "==============================="
+  printf "Ensure you have run the following in the main teleport server to get the auth token and ca-pin."
+  printf "sudo tctl tokens add --type=node"
+  printf "==============================="
+  printf " "
+  printf "What is the domain name or IP for the Auth Server?: "
+  printf "   e.g., teleport.example.com  (note: WITHOUT http://) "  
   read -r AUTH_SERVER
-  echo " "
-  echo "What is the name of this RPi node?: "
+  printf " "
+  printf "What is the name of this RPi node?: "
   read -r NODE_NAME
-  echo " "
-  echo "Enter the auth token: "
+  printf " "
+  printf "Enter the auth token: "
   read -r AUTH_TOKEN
-  echo " "
-  echo "Enter ca-pin (eg.'sha256:2154125...'): "
+  printf " "
+  printf "Enter ca-pin (eg.'sha256:2154125...'): "
   read -r CA_PIN
 
-  echo "Auth Server: $AUTH_SERVER"
-  echo "Node Name: $NODE_NAME"
-  echo "Auth Token: $AUTH_TOKEN"
-  echo "CA Pin: $CA_PIN"
-  echo ""
-  echo "This script will delete your existing teleport install?"
-  echo "Continue with these settings? (y\n)"
+  printf "Auth Server: $AUTH_SERVER"
+  printf "Node Name: $NODE_NAME"
+  printf "Auth Token: $AUTH_TOKEN"
+  printf "CA Pin: $CA_PIN"
+  printf ""
+  printf "This script will delete your existing teleport install?"
+  printf "Continue with these settings? (y\n)"
 
   read -r RESPONSE
   if [ "$RESPONSE" = "n" ] || [ "$RESPONSE" = "N" ]; then
@@ -80,7 +81,7 @@ function install_teleport() {
 }
 
 function create_teleport_config() {
-  echo "Creating Teleport Config in /etc/teleport.yaml"
+  printf "Creating Teleport Config in /etc/teleport.yaml"
   cat > /etc/teleport.yaml <<EOL
 ---
 teleport:
@@ -90,7 +91,7 @@ teleport:
   auth_servers:
   - "${AUTH_SERVER}:${PORT}"
   # advertise_ip is for internal networks and not using a tunnel. Easiest to just use tunnel
-  #advertise_ip: $(hostname --all-ip-addresses | awk '{print $1}')
+  # advertise_ip: $(hostname --all-ip-addresses | awk '{print $1}')
 auth_service:
   enabled: false
 proxy_service:
@@ -119,20 +120,20 @@ EOL
 }
 
 function systemd_start() {
-  echo "Starting systemd teleport.service"
+  printf "Starting systemd teleport.service"
   sudo systemctl daemon-reload
   sudo systemctl enable teleport
   sudo systemctl restart teleport
 }
 
 function get_teleport_status() {
-  echo "Checking teleport status"
+  printf "Checking teleport status"
   sleep 5
   sudo journalctl -u teleport | tail -n 100
 }
 
 
-echo "=== TELEPORT NODE INSTALLER ==="
+printf "=== TELEPORT NODE INSTALLER ==="
 check_root_user
 clean_teleport
 get_user_input
