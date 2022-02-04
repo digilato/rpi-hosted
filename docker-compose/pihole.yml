@@ -1,0 +1,73 @@
+version: "3"
+
+# IMPORTANT:
+# If you plan on using IPv6 then you'll need to manually create this network
+#
+# docker network create --driver bridge --ipv6 --subnet fd01::/64 --subnet 172.20.0.0/24 pihole_pihole_net --attachable
+#
+# You'll also want the IPv6 NAT docker container to help out
+#
+# docker run -d --restart=always -v /var/run/docker.sock:/var/run/docker.sock:ro --cap-drop=ALL --cap-add=NET_RAW --cap-add=NET_ADMIN --cap-add=SYS_MODULE --net=host --name ipv6nat robbertkl/ipv6nat
+
+# Manually create a network so we can use static IPs on the backend
+networks:
+  pihole_net:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  pihole:
+    container_name: pihole
+    hostname: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+
+    environment:
+      TZ: 'America/Toronto'
+      WEBPASSWORD: Pa55w0rd! # 'set a secure password here or it will be random'
+      PIHOLE_DNS_: "172.20.0.2#5053"
+      # These need to be set because we're running PiHole behind docker
+      ServerIP: "192.168.0.185"
+
+    # Volumes store your data between container upgrades
+    volumes:
+      - etc_pihole:/etc/pihole/
+      - etc_dnsmasq:/etc/dnsmasq.d/'
+        # - '/etc/hosts:/etc/hosts:ro'
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    # Recommended but not required (DHCP needs NET_ADMIN)
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    # cap_add:
+    #   - NET_ADMIN
+    restart: unless-stopped
+    networks:
+      pihole_net:
+        ipv4_address: 172.20.0.10
+    depends_on:
+      - cloudflared
+
+  cloudflared:
+    container_name: cloudflared
+    hostname: cloudflared
+    image: crazymax/cloudflared:latest
+
+    environment:
+      TZ: 'America/Toronto'
+      TUNNEL_DNS_UPSTREAM: "https://9.9.9.9/dns-query,https://1.1.1.2/dns-query,https://1.0.0.2/dns-query"
+    restart: unless-stopped
+    networks:
+      pihole_net:
+        ipv4_address: 172.20.0.2
+
+volumes:
+  etc_pihole:
+  etc_dnsmasq:
