@@ -20,7 +20,7 @@ PORT=3080
 
 function check_root_user() {
   if [ "$EUID" -ne 0 ]; then
-    printf "This script requires sudo/root permissions"
+    printf 'This script requires sudo/root permissions'
     exit
   fi
 }
@@ -53,10 +53,10 @@ function get_user_input() {
   printf "Enter ca-pin (eg.'sha256:2154125...'): "
   read -r CA_PIN
 
-  printf "Auth Server: $AUTH_SERVER"
-  printf "Node Name: $NODE_NAME"
-  printf "Auth Token: $AUTH_TOKEN"
-  printf "CA Pin: $CA_PIN"
+  printf 'Auth Server: %s ' "$AUTH_SERVER"
+  printf 'Node Name: %s ' "$NODE_NAME"
+  printf 'Auth Token: %s ' "$AUTH_TOKEN"
+  printf 'CA Pin: %s' "$CA_PIN"
   printf ""
   printf "This script will delete your existing teleport install?"
   printf "Continue with these settings? (y\n)"
