@@ -27,8 +27,8 @@ function check_internet() {
 check_internet
 
 # sudo mkdir -p /usr/local/lib/docker/cli-plugins || error "Failed to create plugins directory."
-printf "https://github.com/docker/compose/releases/download/$version/$DOCKER_PACAKGE"
-# sudo curl -SL "https://github.com/docker/compose/releases/download/$version/$DOCKER_PACAKGE" -o /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to download Docker Compose."
+printf "https://github.com/docker/compose/releases/download/$version/$DOCKER_PACKAGE"
+# sudo curl -SL "https://github.com/docker/compose/releases/download/$version/$DOCKER_PACKAGE" -o /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to download Docker Compose."
 # sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to add executable."
 
 
