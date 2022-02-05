@@ -6,7 +6,7 @@
 # Need to test on other OS's to see how they work.
 # DOES NOT WORK ON DEBIAN (no eth0!): $(ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)
 
-export EXTERNAL_IP=$(ip route get 8.8.8.8 | awk '{gsub(".*src",""); print $1; exit}')
-
+EXTERNAL_IP=$(ip route get 8.8.8.8 | awk '{gsub(".*src",""); print $1; exit}')
+export EXTERNAL_IP
 
 exec docker-compose -f pihole.yml up -d
