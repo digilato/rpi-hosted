@@ -26,11 +26,12 @@ function check_internet() {
 
 check_internet
 
-# sudo mkdir -p /usr/local/lib/docker/cli-plugins || error "Failed to create plugins directory."
-printf "https://github.com/docker/compose/releases/download/$version/$compose_package"
-# sudo curl -SL "https://github.com/docker/compose/releases/download/$version/$compose_package" -o /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to download Docker Compose."
-# sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to add executable."
-
+sudo mkdir -p /usr/local/lib/docker/cli-plugins || error "Failed to create plugins directory."
+echo "Downloading Docker Compose $version from https://github.com/docker/compose/releases/download/$version/$compose_package"
+sudo curl -SL "https://github.com/docker/compose/releases/download/$version/$compose_package" -o /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to download Docker Compose."
+sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to add executable."
+printf "Installed: "
+exec docker compose version
 
 # Install older version
 # curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose || error "Failed to install Docker Compose."
