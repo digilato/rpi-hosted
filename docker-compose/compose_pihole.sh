@@ -9,4 +9,5 @@
 EXTERNAL_IP=$(ip route get 8.8.8.8 | awk '{gsub(".*src",""); print $1; exit}')
 export EXTERNAL_IP
 
-exec docker-compose -f pihole.yml up -d
+printf ${EXTERNAL_IP}
+# exec docker-compose -f pihole.yml up -d
