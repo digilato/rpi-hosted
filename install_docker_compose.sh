@@ -4,9 +4,9 @@ export version=v2.2.3 # Could automate for latest, but individuals might not wan
 opsys=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
 export opsys
 # TODO: Automate this portion.
-export arch=arm # '386' 'arm' on linux or 'amd64' for all distros
+export arch=armv7 # options include 'armv7' 'aarch64' 'armv6' 'x86_64' 
 
-COMPOSE_PACKAGE=docker-compose-$opsys-$arch
+compose_package=docker-compose-$opsys-$arch
 
 
 function error {
@@ -27,8 +27,8 @@ function check_internet() {
 check_internet
 
 # sudo mkdir -p /usr/local/lib/docker/cli-plugins || error "Failed to create plugins directory."
-printf "https://github.com/docker/compose/releases/download/$version/$DOCKER_PACKAGE"
-# sudo curl -SL "https://github.com/docker/compose/releases/download/$version/$DOCKER_PACKAGE" -o /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to download Docker Compose."
+printf "https://github.com/docker/compose/releases/download/$version/$compose_package"
+# sudo curl -SL "https://github.com/docker/compose/releases/download/$version/$compose_package" -o /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to download Docker Compose."
 # sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to add executable."
 
 
