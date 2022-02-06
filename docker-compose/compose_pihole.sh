@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # could also use (works debian and RPi OS):  $(ip route get 8.8.8.8 | awk '{gsub(".*src",""); print $1; exit}')
 # could also use (works debian and RPi OS): ip=`ip addr show |grep "inet " |grep -v 127.0.0. |head -1|cut -d" " -f6|cut -d/ -f1`
@@ -34,7 +34,7 @@ read -r PIHOLE_PASS
 
 export PIHOLE_PASS
 
-mkdir -p /docker_binding/pihole/pihole || error "Failed to create bindings directory."
-mkdir -p /docker_bind/pihole/dnsmasq.d || error "Failed to create bindings directory."
+sudo mkdir -p /docker_binding/pihole/pihole || error "Failed to create bindings directory."
+sudo mkdir -p /docker_bind/pihole/dnsmasq.d || error "Failed to create bindings directory."
 
 exec docker compose -f pihole.yaml up -d
