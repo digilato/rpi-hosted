@@ -1,14 +1,5 @@
 version: "3"
 
-# IMPORTANT:
-# If you plan on using IPv6 then you'll need to manually create this network
-#
-# docker network create --driver bridge --ipv6 --subnet fd01::/64 --subnet 172.20.0.0/24 pihole_pihole_net --attachable
-#
-# You'll also want the IPv6 NAT docker container to help out
-#
-# docker run -d --restart=always -v /var/run/docker.sock:/var/run/docker.sock:ro --cap-drop=ALL --cap-add=NET_RAW --cap-add=NET_ADMIN --cap-add=SYS_MODULE --net=host --name ipv6nat robbertkl/ipv6nat
-
 # Manually create a network so we can use static IPs on the backend
 networks:
   pihole_net:
@@ -25,22 +16,22 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      - "67:67/udp"
-      - "80:80/tcp"
-      - "443:443/tcp"
+      # - "67:67/udp"
+      - "5380:80/tcp" #non-standard since we should be going through reverse proxy
+      - "53443:443/tcp" #non-standard since we should be going through reverse proxy
 
     environment:
-      TZ: 'America/Toronto'
-      WEBPASSWORD: Pa55w0rd! # 'set a secure password here or it will be random'
+      TZ: 'America/Toronto' # find others at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      WEBPASSWORD: ${PIHOLE_PASS} # 'set a secure password here or it will be random'
       PIHOLE_DNS_: "172.20.0.2#5053"
       # These need to be set because we're running PiHole behind docker
-      SERVERIP: ${EXTERNAL_IP}
+      ServerIP: ${EXTERNAL_IP}
 
     # Volumes store your data between container upgrades
     volumes:
-      - etc_pihole:/etc/pihole/
-      - etc_dnsmasq:/etc/dnsmasq.d/'
-        # - '/etc/hosts:/etc/hosts:ro'
+      - /docker_bind/pihole/pihole:/etc/pihole/
+      - /docker_bind/pihole/dnsmasq.d:/etc/dnsmasq.d/'
+        
     dns:
       - 127.0.0.1
       - 1.1.1.1
@@ -68,6 +59,6 @@ services:
       pihole_net:
         ipv4_address: 172.20.0.2
 
-volumes:
-  etc_pihole:
-  etc_dnsmasq:
+# volumes:
+#   etc_pihole:
+#   etc_dnsmasq:
