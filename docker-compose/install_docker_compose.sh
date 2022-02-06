@@ -3,7 +3,8 @@
 export version=v2.2.3 # Could automate for latest, but individuals might not want this. Find latest at https://github.com/docker/compose/releases
 opsys=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
 export opsys
-# TODO: Automate this portion.
+
+# TODO: Automate this portion with uname -m. THe issue is armv7l, armhf, etc., needs to be parsed; case?
 export arch=armv7 # options include 'armv7' 'aarch64' 'armv6' 'x86_64' 
 
 compose_package=docker-compose-$opsys-$arch
@@ -26,11 +27,12 @@ function check_internet() {
 
 check_internet
 
-# sudo mkdir -p /usr/local/lib/docker/cli-plugins || error "Failed to create plugins directory."
-printf "https://github.com/docker/compose/releases/download/$version/$compose_package"
-# sudo curl -SL "https://github.com/docker/compose/releases/download/$version/$compose_package" -o /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to download Docker Compose."
-# sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to add executable."
-
+sudo mkdir -p /usr/local/lib/docker/cli-plugins || error "Failed to create plugins directory."
+echo "Downloading Docker Compose $version from https://github.com/docker/compose/releases/download/$version/$compose_package"
+sudo curl -SL "https://github.com/docker/compose/releases/download/$version/$compose_package" -o /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to download Docker Compose."
+sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose || error "Failed to add executable."
+printf "Installed: "
+exec docker compose version
 
 # Install older version
 # curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose || error "Failed to install Docker Compose."
