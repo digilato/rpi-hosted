@@ -3,7 +3,8 @@
 export version=v2.2.3 # Could automate for latest, but individuals might not want this. Find latest at https://github.com/docker/compose/releases
 opsys=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
 export opsys
-# TODO: Automate this portion.
+
+# TODO: Automate this portion with uname -m. THe issue is armv7l, armhf, etc., needs to be parsed; case?
 export arch=armv7 # options include 'armv7' 'aarch64' 'armv6' 'x86_64' 
 
 compose_package=docker-compose-$opsys-$arch
