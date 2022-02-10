@@ -20,4 +20,4 @@ check_internet
 sudo mkdir -p /docker_bind/nginxproxymanager/data || error "Failed to create bindings directory."
 sudo mkdir -p /docker_bind/nginxproxymanager/letsencrypt || error "Failed to create bindings directory."
 
-exec docker compose -f nginxproxymanager.yaml up -d
+sudo exec docker compose -f nginxproxymanager.yaml up -d  || error "Failed to start Nginx Proxy Manager"
