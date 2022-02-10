@@ -23,4 +23,4 @@ nginx_name=`docker ps | grep nginx-proxy-manager | awk '{print $2}'`
 sudo docker stop $nginx_pid || error "Failed to stop portainer!"
 sudo docker rm $nginx_pid || error "Failed to remove portainer container!"
 sudo docker rmi $nginx_name || error "Failed to remove/untag images from the container!"
-sudo exec docker compose -f nginxproxymanager.yaml up -d || error "Failed to execute newer version of Nginx Proxy Manager!"
+exec docker compose -f nginxproxymanager.yaml up -d || error "Failed to execute newer version of Nginx Proxy Manager!"
