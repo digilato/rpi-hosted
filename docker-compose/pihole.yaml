@@ -17,8 +17,8 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       # - "67:67/udp"
-      - "5380:80/tcp" #non-standard since we should be going through reverse proxy
-      - "53443:443/tcp" #non-standard since we should be going through reverse proxy
+      - "80:80/tcp" #change to non-standard if using reverse proxy
+      - "443:443/tcp" #change to non-standard if using reverse proxy
 
     environment:
       TZ: 'America/Toronto' # find others at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
