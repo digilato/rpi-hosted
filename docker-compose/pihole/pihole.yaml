@@ -39,7 +39,7 @@ services:
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     # cap_add:
     #   - NET_ADMIN
-    restart: unless-stopped
+    restart: always
     networks:
       pihole_net:
         ipv4_address: 172.20.0.10
@@ -54,7 +54,7 @@ services:
     environment:
       TZ: 'America/Toronto'
       TUNNEL_DNS_UPSTREAM: "https://9.9.9.9/dns-query,https://1.1.1.2/dns-query,https://1.0.0.2/dns-query"
-    restart: unless-stopped
+    restart: always
     networks:
       pihole_net:
         ipv4_address: 172.20.0.2
