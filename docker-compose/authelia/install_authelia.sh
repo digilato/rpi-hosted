@@ -17,11 +17,9 @@ function check_internet() {
 
 check_internet
 
-sudo mkdir -p /docker_bind/authelia/data || error "Failed to create bindings directory."
-sudo mkdir -p /docker_bind/authelia/letsencrypt || error "Failed to create bindings directory."
+sudo mkdir -p /docker_bind/authelia/config || error "Failed to create bindings directory."
 
-
-# TODO: NEED TO COPT SAMPLE FILES
-
+# TODO: NEED TO COPY SAMPLE FILES. Make sure the are configuraiotn.yaml.sample to avoid overwriting existing config in error.
+# Or see if the file already exists, and if not copy it over??
 
 exec docker compose -f authelia.yaml up -d  || error "Failed to start Nginx Proxy Manager"
