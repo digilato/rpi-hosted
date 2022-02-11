@@ -25,7 +25,7 @@ sudo docker rm "$authelia_pid" || error "Failed to remove portainer container!"
 sudo docker rmi "$authelia_name" || error "Failed to remove/untag images from the container!"
 
 echo "Taking the opportunity to backup data volume while stopped (i.e., inactive database)."
-mkdir -p "$(pwd)"/backup
-sudo tar -cvfz "$(pwd)"/backup/authelia_"$(date +%Y%m%d)".tar.gz /docker_bind/authelia || error "Failed to back up authelia docker_bind!"
+mkdir -p backup
+sudo tar cvfz backup/authelia_"$(date +%Y%m%d)".tar.gz /docker_bind/authelia || error "Failed to back up authelia docker_bind!"
 
 exec docker compose -f authelia.yaml up -d || error "Failed to execute newer version of Nginx Proxy Manager!"
