@@ -4,6 +4,7 @@ services:
   authelia:
     image: authelia/authelia
     container_name: authelia
+    restart: always
     volumes:
       - /docker_bind/authelia/config:/config #change this to a shared folder on your system. DO NOT use a "volume"
     ports:
