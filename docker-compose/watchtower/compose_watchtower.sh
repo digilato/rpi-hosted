@@ -33,6 +33,7 @@ function create_env_config() {
     cat > .env <<EOL
 # watchtower environment variables. Edit HERE and NOT in the docker_compose.yaml file to maintain
 # changes across updates! Otherwise changes will be overwritten will pulling updates with git!
+# Additional settings can be found at https://containrrr.dev/watchtower/
 
 TIMEZONE='America/Toronto'  #change to appropriate timezone according to https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
 TZ='America/Toronto'
@@ -42,6 +43,11 @@ WATCHTOWER_NOTIFICATION_EMAIL_SERVER='smtp.gmail.com'  #example if using gmail a
 WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT='465'  #example if using gmail account
 WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER='support@gmail.com'  #email address used for SMTP authentication
 WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD='Pa55w0rd!'  #password for SMTP authentication
+
+# Advanced variables to allow for portability without having to edit scripts
+# Will only monitor for new images, send notifications and invoke the pre-check/post-check hooks, but will not update the containers
+WATCHTOWER_MONITOR_ONLY='true' # set to false to automatically update images if using :latest tag
+WATCHTOWER_CLEANUP='false' #removes old images after updating
 
 EOL
   fi
@@ -53,10 +59,16 @@ check_internet
 create_env_config  
 
 printf "Email settings need to be configured in the .env file.\n"
-printf "Please make the necessary changes then execute the following: \n"
-printf "docker compose up -d \n"
+printf "\n"
 
 vi .env
+
+printf "===============================================================\n\n"
+printf "Please make the necessary changes then execute the following: \n\n"
+printf "docker compose up -d \n"
+printf "\n"
+printf "===============================================================\n\n"
+
 
 # read -r RESPONSE
 # if [ "$RESPONSE" = "n" ] || [ "$RESPONSE" = "N" ]; then
