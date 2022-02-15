@@ -45,14 +45,14 @@ function create_env_config() {
     cat > .env <<EOL
 # pihole environment variables. Edit HERE and NOT in the pihole.yaml docker_compose file to maintain
 # changes across updates! Otherwise changes will be overwritten will pulling updates with git!
----
+
 TIMEZONE='America/Toronto'  #change to appropriate timezone according to https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
 EXTERNAL_IP=$(ip route get 8.8.8.8 | awk '{gsub(".*src",""); print $1; exit}')
-HTTP_PORT=680  #behind proxy, change if not using proxy
-HTTPS_PORT=6443  #behind proxy, change if not using proxy
-PIHOLE_VERSION=latest  #allows for pegging to specific version if desired
-PIHOLE_PASS=$PIHOLE_PASS
-CLOUDFLARE_VERSION=latest  #allows for pegging to specific version if desired
+HTTP_PORT='680'  #behind proxy, change if not using proxy
+HTTPS_PORT='6443'  #behind proxy, change if not using proxy
+PIHOLE_VERSION='latest'  #allows for pegging to specific version if desired
+PIHOLE_PASS="$PIHOLE_PASS"
+CLOUDFLARE_VERSION='latest'  #allows for pegging to specific version if desired
 
 EOL
   fi
