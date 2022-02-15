@@ -1,8 +1,9 @@
 version: '3'
 services:
-  app:
+  nginxproxymanager:
     image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
+    container_name: nginxproxymanager
+    restart: always
     ports:
       - '80:80'
       - '81:81'

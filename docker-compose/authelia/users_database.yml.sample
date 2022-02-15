@@ -1,0 +1,41 @@
+###############################################################
+#                         Users Database                      #
+###############################################################
+ 
+# This file can be used if you do not have an LDAP set up.
+ 
+# List of users
+users:
+  cgravelle:
+    displayname: "Christian Gravelle"
+    password: "$argon2id$v=19$m=1024,t=1,p=8$dXM3dGlmaVdwQXNadnhvTQ$RaOjgAib9nOqHXPszOAQoiD2MswO7g5D3/jZzhQ8DpQ"   #hash using docker run authelia/authelia:latest YOURNAME hash-password SOMEPASSWORD
+    email: christian.gravelle@gmail.com
+    groups:
+      - admins
+      - dev
+###############################################################
+#                         Users Database                      #
+###############################################################
+ 
+# This file can be used if you do not have an LDAP set up.
+ 
+# List of users
+users:
+  username1:
+    displayname: "Tom Green"
+    #hash using https://argon2.online/ with same settings in configuration.yml "authentication_backend"
+    password: "$argon2id$v=19$m=1024,t=1,p=8$elhMNXJEbWdwOE1yV01BWg$xJzuLcKxNCuILr+RZI8PHH5HWTPu4nIaXZTAFpSCAks"
+    email: username2@gmail.com
+    groups:
+      - admins
+      - dev
+  
+  username2:
+    displayname: "John Smith"
+    #hash using https://argon2.online/ with same settings in configuration.yml "authentication_backend"
+    password: "$argon2id$v=19$m=1024,t=1,p=8$ZlV4ZWowZEUwcFhLR3AzQg$ZPsPe8O1cq7obZ/NPcjKPAm7NvtBnjiIGW6KxlZjQ1w"
+    email: username2@gmail.com
+    groups:
+      - users
+
+
