@@ -38,12 +38,12 @@ GITHUB_LATEST_VERSION=$(curl -L -s -H 'Accept: application/json' https://github.
 GITHUB_FILE="ctop-${GITHUB_LATEST_VERSION}-${OPSYS}-${ARCH}"
 GITHUB_URL="https://github.com/bcicen/ctop/releases/download/${GITHUB_LATEST_VERSION}/${GITHUB_FILE}"
 
-echo "$GITHUB_URL"
+# echo "$GITHUB_URL"
 
 # install/update the local binary
-# curl -L -o ctop "$GITHUB_URL"
-# install -Dm 755 ctop -t "$DIR"
-# rm ctop
+curl -L -o ctop "$GITHUB_URL"
+install -Dm 755 ctop -t "$DIR"
+rm ctop
 
 # sudo wget "https://github.com/bcicen/ctop/releases/download/$VERSION/$CTOP_PACKAGE" -O /usr/local/bin/ctop
 # sudo chmod +x /usr/local/bin/ctop
