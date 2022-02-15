@@ -21,18 +21,48 @@ function check_internet() {
   fi
 }
 
+
+function get_user_input() {
+  printf "===============================\n"
+  printf "Pi-hole Web UI password.\n"
+  printf "===============================\n"
+  printf " "
+  printf "Please set the password to use for the pihole webUI\n"
+  read -rp '>  ' PIHOLE_PASS
+  
+
+}
+
+
+function create_env_config() {
+
+  FILE=.env
+  if test -f "$FILE"; then
+    echo "$FILE file already exists. Skipping..."
+  else
+    get_user_input
+    printf "Creating local .env file for docker compose configuration\n"
+    cat > .env <<EOL
+# pihole environment variables. Edit HERE and NOT in the pihole.yaml docker_compose file to maintain
+# changes across updates! Otherwise changes will be overwritten will pulling updates with git!
+
+TIMEZONE='America/Toronto'  #change to appropriate timezone according to https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
+EXTERNAL_IP=$(ip route get 8.8.8.8 | awk '{gsub(".*src",""); print $1; exit}')
+HTTP_PORT='680'  #behind proxy, change if not using proxy
+HTTPS_PORT='6443'  #behind proxy, change if not using proxy
+PIHOLE_VERSION='latest'  #allows for pegging to specific version if desired
+PIHOLE_PASS="$PIHOLE_PASS"
+CLOUDFLARE_VERSION='latest'  #allows for pegging to specific version if desired
+
+EOL
+  fi
+}
+
+
 check_internet
 
+create_env_config  
 
-EXTERNAL_IP=$(ip route get 8.8.8.8 | awk '{gsub(".*src",""); print $1; exit}')
-export EXTERNAL_IP
-
-echo "Using IP address $EXTERNAL_IP"
-echo "What password should be used for pihole web UI?"
-printf ">  "
-read -r PIHOLE_PASS
-
-export PIHOLE_PASS
 
 sudo mkdir -p /docker_binding/pihole/pihole || error "Failed to create bindings directory."
 sudo mkdir -p /docker_bind/pihole/dnsmasq.d || error "Failed to create bindings directory."

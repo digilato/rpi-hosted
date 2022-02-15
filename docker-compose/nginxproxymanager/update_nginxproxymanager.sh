@@ -17,11 +17,14 @@ function check_internet() {
 
 check_internet
 
-nginx_pid=$(docker ps | grep nginx-proxy-manager | awk '{print $1}')
+# nginx_pid=$(docker ps | grep nginx-proxy-manager | awk '{print $1}')
 nginx_name=$(docker ps | grep nginx-proxy-manager | awk '{print $2}')
 
-sudo docker stop "$nginx_pid" || error "Failed to stop portainer!"
-sudo docker rm "$nginx_pid" || error "Failed to remove portainer container!"
+docker compose -f nginxproxymanager.yaml down
+
+# Following is to stop a containers started with docker. Proper way is to down for docker compose.
+# sudo docker stop "$nginx_pid" || error "Failed to stop nginx-proxy-manager!"
+# sudo docker rm "$nginx_pid" || error "Failed to remove nginx-proxy-manager container!"
 sudo docker rmi "$nginx_name" || error "Failed to remove/untag images from the container!"
 
 echo "Taking the opportunity to backup data volume while stopped (i.e., inactive database)."
