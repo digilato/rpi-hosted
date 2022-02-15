@@ -52,13 +52,15 @@ check_internet
 
 create_env_config  
 
-printf "Email settings need to be configured in the .env file."
-printf "Please make the necessary changes then execute the following: "
-printf "docker compose up -d"
+printf "Email settings need to be configured in the .env file.\n"
+printf "Please make the necessary changes then execute the following: \n"
+printf "docker compose up -d \n"
+
+vi .env
 
 # read -r RESPONSE
 # if [ "$RESPONSE" = "n" ] || [ "$RESPONSE" = "N" ]; then
 #   exit 0
 # fi
 
-# exec docker compose up -d
+#exec docker compose up -d
