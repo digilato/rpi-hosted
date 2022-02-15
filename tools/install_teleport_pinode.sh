@@ -2,15 +2,19 @@
 # This if for installation on machines that do not already have Teleport as part of the repo. For future, we could 
 # to a test and automate the repo addition and installation OR the tarball, similar to how docker install script works.
 
-export version=v8.1.1 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
-opsys=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
-export opsys
-# TODO: Automate this portion.
-export arch=arm # '386' 'arm' on linux or 'amd64' for all distros 
+VERSION=v8.2.0 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
+OPSYS=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
+ARCH=$(uname -m)
+case $ARCH in
+    i386|i686) ARCH=386 ;;
+    x86_64) ARCH=amd64 ;;
+    armhf|armv7*) ARCH=arm ;;
+    aarch64*) ARCH=arm64 ;;
+esac
 
-TELEPORT_PACKAGE=teleport-$version-$opsys-$arch-bin.tar.gz
+TELEPORT_PACKAGE=teleport-$VERSION-$OPSYS-$ARCH-bin.tar.gz
 
-AUTH_SERVER=teleport.example.com # Used to be manual, now prompts below. TODO: For personal use, could use this as defualt
+AUTH_SERVER=teleport.example.com # Used to be manual, now prompts below. 
 # Use port 3025 if internal, or port 443 for external v8+ (or 3080 for older port dependent setup)
 PORT=3080
 
