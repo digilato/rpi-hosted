@@ -12,16 +12,16 @@ services:
   pihole:
     container_name: pihole
     hostname: pihole
-    image: pihole/pihole:latest
+    image: pihole/pihole:${PIHOLE_VERSION}
     ports:
       - "53:53/tcp"
       - "53:53/udp"
       # - "67:67/udp"
-      - "80:80/tcp" #change to non-standard if using reverse proxy
-      - "443:443/tcp" #change to non-standard if using reverse proxy
+      - "${HTTP_PORT}:80/tcp" #change to non-standard if using reverse proxy
+      - "${HTTPS_PORT}:443/tcp" #change to non-standard if using reverse proxy
 
     environment:
-      TZ: 'America/Toronto' # find others at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      TZ: '${TIMEZONE}' # find others at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
       WEBPASSWORD: ${PIHOLE_PASS} # 'set a secure password here or it will be random'
       PIHOLE_DNS_: "172.20.0.2#5053"
       # These need to be set because we're running PiHole behind docker
@@ -49,10 +49,9 @@ services:
   cloudflared:
     container_name: cloudflared
     hostname: cloudflared
-    image: crazymax/cloudflared:latest
-
+    image: crazymax/cloudflared:${CLOUDFLARE_VERSION}
     environment:
-      TZ: 'America/Toronto'
+      TZ: '${TIMEZONE}'
       TUNNEL_DNS_UPSTREAM: "https://9.9.9.9/dns-query,https://1.1.1.2/dns-query,https://1.0.0.2/dns-query"
     restart: always
     networks:
