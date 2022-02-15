@@ -1,12 +1,13 @@
 #!/bin/bash
 
 export VERSION=0.7.6 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
-opsys=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
+OPSYS=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
 export OPSYS
 # TODO: Automate this portion.
 export ARCH=arm # '386' 'arm' on linux or 'amd64' for all distros 
 
 CTOP_PACKAGE=ctop-$VERSION-$OPSYS-$ARCH
+
 
 
 function error {
