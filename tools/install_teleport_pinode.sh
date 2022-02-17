@@ -2,7 +2,7 @@
 # This if for installation on machines that do not already have Teleport as part of the repo. For future, we could 
 # to a test and automate the repo addition and installation OR the tarball, similar to how docker install script works.
 
-VERSION=v8.2.0 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
+VERSION=v8.3.0 # Could automate for latest, but individuals might not want this. Find latest at https://goteleport.com/teleport/download/
 OPSYS=$(uname -s | awk '{print tolower($0)}')  # 'darwin' 'linux' or 'windows'
 ARCH=$(uname -m)
 case $ARCH in
