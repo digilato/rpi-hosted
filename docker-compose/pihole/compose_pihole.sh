@@ -64,7 +64,7 @@ check_internet
 create_env_config  
 
 
-sudo mkdir -p /docker_binding/pihole/pihole || error "Failed to create bindings directory."
+sudo mkdir -p /docker_bind/pihole/pihole || error "Failed to create bindings directory."
 sudo mkdir -p /docker_bind/pihole/dnsmasq.d || error "Failed to create bindings directory."
 
 exec docker compose -f pihole.yaml up -d
