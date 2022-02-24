@@ -40,6 +40,7 @@ TZ='America/Toronto'
 WATCHTOWER_NOTIFICATION_EMAIL_FROM='support@gmail.com'  #email address in the 'from' field
 WATCHTOWER_NOTIFICATION_EMAIL_TO='username@example.com'  #email address the messsage should be sent to
 WATCHTOWER_NOTIFICATION_EMAIL_SUBJECTTAG='Prefix: '  # useful when running multople watchtowers going to the same address
+WATCHTOWER_NOTIFICATION_TEMPLATE='{{range .}}CHANGEME ({{.Level}}):{{.Message}}{{println}}{{end}}'
 WATCHTOWER_NOTIFICATION_EMAIL_SERVER='smtp.gmail.com'  #example if using gmail account
 WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT='465'  #example if using gmail account
 WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER='support@gmail.com'  #email address used for SMTP authentication
