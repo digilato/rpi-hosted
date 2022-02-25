@@ -17,8 +17,8 @@ function check_internet() {
 
 check_internet
 
-portainer_pid=`docker ps | grep portainer-ce | awk '{print $1}'`
-portainer_name=`docker ps | grep portainer-ce | awk '{print $2}'`
+portainer_pid=$(docker ps | grep portainer | awk '{print $1}')
+portainer_name=$(docker ps | grep portainer | awk '{print $2}')
 
 sudo docker stop $portainer_pid || error "Failed to stop portainer!"
 sudo docker rm $portainer_pid || error "Failed to remove portainer container!"
