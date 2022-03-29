@@ -30,15 +30,15 @@ function create_env_config() {
 # changes across updates! Otherwise changes will be overwritten when pulling updates with git!
 # Additional details can be found at https://github.com/willfarrell/docker-autoheal
 
-AUTOHEAL_VERSION=1.2.0
+AUTOHEAL_VERSION='1.2.0'
 WEBHOOK_URL=""    # post message to the webhook if a container was restarted (or restart failed)
 
 # below are advanced defaults that typically don't need to be touched
-AUTOHEAL_CONTAINER_LABEL=autoheal
-AUTOHEAL_INTERVAL=5   # check every 5 seconds
-AUTOHEAL_START_PERIOD=0   # wait 0 seconds before first health check
-AUTOHEAL_DEFAULT_STOP_TIMEOUT=10   # Docker waits max 10 seconds (the Docker default) for a container to stop before killing during restarts (container overridable via label, see below)
-CURL_TIMEOUT=30     # --max-time seconds for curl requests to Docker API
+AUTOHEAL_CONTAINER_LABEL='autoheal'
+AUTOHEAL_INTERVAL='5'   # check every 5 seconds
+AUTOHEAL_START_PERIOD='0'   # wait 0 seconds before first health check
+AUTOHEAL_DEFAULT_STOP_TIMEOUT='10'   # Docker waits max 10 seconds (the Docker default) for a container to stop before killing during restarts (container overridable via label, see below)
+CURL_TIMEOUT='30'     # --max-time seconds for curl requests to Docker API
 
 EOL
   fi
