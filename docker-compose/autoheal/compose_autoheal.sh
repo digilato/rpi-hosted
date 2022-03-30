@@ -30,7 +30,7 @@ function create_env_config() {
 # changes across updates! Otherwise changes will be overwritten when pulling updates with git!
 # Additional details can be found at https://github.com/willfarrell/docker-autoheal
 
-AUTOHEAL_VERSION='1.2.0'
+AUTOHEAL_VERSION='1.2.2'
 WEBHOOK_URL=''    # post message to the webhook if a container was restarted (or restart failed)
 
 # below are advanced defaults that typically don't need to be touched
