@@ -14,4 +14,4 @@ services:
             - CURL_TIMEOUT=${CURL_TIMEOUT:-30}     # --max-time seconds for curl requests to Docker API
             - WEBHOOK_URL=${WEBHOOK_URL}    # post message to the webhook if a container was restarted (or restart failed)
         restart: always
-        image: willfarrell/autoheal:${AUTOHEAL_VERSION:-latest}
+        image: digilato/autoheal:${AUTOHEAL_VERSION:-latest}

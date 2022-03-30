@@ -31,7 +31,7 @@ function create_env_config() {
 # Additional details can be found at https://github.com/willfarrell/docker-autoheal
 
 AUTOHEAL_VERSION='1.2.0'
-WEBHOOK_URL=""    # post message to the webhook if a container was restarted (or restart failed)
+WEBHOOK_URL=''    # post message to the webhook if a container was restarted (or restart failed)
 
 # below are advanced defaults that typically don't need to be touched
 AUTOHEAL_CONTAINER_LABEL='autoheal'
