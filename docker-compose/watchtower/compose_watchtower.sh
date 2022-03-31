@@ -35,6 +35,8 @@ function create_env_config() {
 # changes across updates! Otherwise changes will be overwritten will pulling updates with git!
 # Additional settings can be found at https://containrrr.dev/watchtower/
 
+WATCHTOWER_VERSION='latest'  #change to specific version of just use latest
+
 TIMEZONE='America/Toronto'  #change to appropriate timezone according to https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
 TZ='America/Toronto'
 WATCHTOWER_NOTIFICATION_EMAIL_FROM='support@gmail.com'  #email address in the 'from' field
@@ -63,18 +65,9 @@ create_env_config
 printf "Email settings need to be configured in the .env file.\n"
 printf "\n"
 
-vi .env
-
 printf "===============================================================\n\n"
 printf "Please make the necessary changes then execute the following: \n\n"
 printf "docker compose up -d \n"
 printf "\n"
 printf "===============================================================\n\n"
 
-
-# read -r RESPONSE
-# if [ "$RESPONSE" = "n" ] || [ "$RESPONSE" = "N" ]; then
-#   exit 0
-# fi
-
-#exec docker compose up -d

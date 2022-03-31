@@ -22,4 +22,4 @@ services:
             - WATCHTOWER_CLEANUP=${WATCHTOWER_CLEANUP}
             
         restart: always
-        image: containrrr/watchtower
+        image: containrrr/watchtower:${WATCHTOWER_VERSION:-latest}
