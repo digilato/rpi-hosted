@@ -1,7 +1,11 @@
 #! /bin/bash
 
-command -v python3 >/dev/null 2>&1 && echo Python 3 is installed  # POSIX-compliant
+if command -v python3 >/dev/null 2>&1; then
 
+    echo "Python3 is installed"
 
+else
 
-type -P python3 >/dev/null 2>&1 && echo Python 3 is installed     # Bash only
+    echo "Python3 must be installed"
+
+fi
