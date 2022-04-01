@@ -39,31 +39,31 @@ function clean_teleport() {
 }
 
 function get_user_input() {
-  printf "==============================="
-  printf "Ensure you have run the following in the main teleport server to get the auth token and ca-pin."
-  printf "sudo tctl tokens add --type=node"
-  printf "==============================="
-  printf " "
-  printf "What is the domain name or IP for the Auth Server?: "
-  printf "   e.g., teleport.example.com  (note: WITHOUT http://) "  
+  printf "===============================\n"
+  printf "Ensure you have run the following in the main teleport server to get the auth token and ca-pin.\n"
+  printf "sudo tctl tokens add --type=node\n"
+  printf "===============================\n"
+  printf " \n"
+  printf "What is the domain name or IP for the Auth Server?: \n"
+  printf "   e.g., teleport.example.com  (note: WITHOUT http://) \n"  
   read -r AUTH_SERVER
-  printf " "
-  printf "What is the name of this RPi node?: "
+  printf " \n"
+  printf "What is the name of this RPi node?: \n"
   read -r NODE_NAME
-  printf " "
-  printf "Enter the auth token: "
+  printf " \n"
+  printf "Enter the auth token: \n"
   read -r AUTH_TOKEN
-  printf " "
-  printf "Enter ca-pin (eg.'sha256:2154125...'): "
+  printf " \n"
+  printf "Enter ca-pin (eg.'sha256:2154125...'): \n"
   read -r CA_PIN
 
-  printf 'Auth Server: %s ' "$AUTH_SERVER"
-  printf 'Node Name: %s ' "$NODE_NAME"
-  printf 'Auth Token: %s ' "$AUTH_TOKEN"
-  printf 'CA Pin: %s' "$CA_PIN"
-  printf ""
-  printf "This script will delete your existing teleport install?"
-  printf "Continue with these settings? (y\n)"
+  printf 'Auth Server: %s ' "$AUTH_SERVER\n"
+  printf 'Node Name: %s ' "$NODE_NAME\n"
+  printf 'Auth Token: %s ' "$AUTH_TOKEN\n"
+  printf 'CA Pin: %s' "$CA_PIN\n"
+  printf "\n"
+  printf "This script will delete your existing teleport install?\n"
+  printf "Continue with these settings? (y\n)\n"
 
   read -r RESPONSE
   if [ "$RESPONSE" = "n" ] || [ "$RESPONSE" = "N" ]; then
@@ -85,7 +85,7 @@ function install_teleport() {
 }
 
 function create_teleport_config() {
-  printf "Creating Teleport Config in /etc/teleport.yaml"
+  printf "Creating Teleport Config in /etc/teleport.yaml\n"
   cat > /etc/teleport.yaml <<EOL
 ---
 teleport:
@@ -109,7 +109,7 @@ ssh_service:
     command: [hostname]
     period: 10m0s
   - name: IP
-    command: ["/bin/sh", "-c", "hostname --all-ip-addresses | awk '{print $1}'"]
+    command: ["/bin/sh", "-c", "hostname --all-ip-addresses | awk '{print \$1}'"]
     period: 10m0s
   - name: uptime
     command: ["/usr/bin/uptime", "-p"]
