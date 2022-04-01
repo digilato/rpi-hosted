@@ -67,4 +67,14 @@ create_env_config
 sudo mkdir -p /docker_bind/pihole/pihole || error "Failed to create bindings directory."
 sudo mkdir -p /docker_bind/pihole/dnsmasq.d || error "Failed to create bindings directory."
 
-exec docker compose -f pihole.yaml up -d
+printf "Settings (e.g., version or password) need to be configured in the .env file.\n"
+printf "\n"
+
+printf "===============================================================\n\n"
+printf "Please make the necessary changes then execute the following: \n\n"
+printf "docker compose up -d \n"
+printf "\n"
+printf "===============================================================\n\n"
+
+
+# exec docker compose -f pihole.yaml up -d
