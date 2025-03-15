@@ -1,3 +1,4 @@
 *.webloc
 .env
 .dccache
+.DS_Store
