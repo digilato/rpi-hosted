@@ -26,8 +26,39 @@ sudo usermod -aG docker $USER || error "Failed to add user to the Docker usergro
 # However, best practice is to place /var/lib/docker on a separate partition so changing to place
 # directory in /var/lib/docker and create a symlink so existing compose configurations are not broken
 # sudo mkdir /docker_bind || error "Failed to add directory for binding docker volumes."
-sudo mkdir /var/lib/docker/docker_bind || error "Failed to add directory for binding docker volumes."
-sudo ln -s /var/lib/docker/docker_bind /docker_bind || error "Failed to create symlink for binding docker volumes."
+sudo mkdir /var/lib/docker/docker_bind || error "Failed to add directory for binding docker data."
+sudo ln -s /var/lib/docker/docker_bind /docker_bind || error "Failed to create symlink for binding docker data."
+
+
+#############################################
+# TODO: Still need to see about autoamtically adding backup for the docker_bind directory
+#
+# Create an automated back up in /etc/cron.weekly/docker_backup with the contents.
+# -----
+# #!/bin/bash
+# DATE=$(date +%Y%m%d)
+# BACKUP_DIR=/PATH TO/docker_backup
+# 
+# # timestamp each backup #
+# tar zcvpf "$BACKUP_DIR"/docker_backup-$DATE.tar.gz /docker_bind
+# 
+# # Delete files older than 100 days #
+# find $BACKUP_DIR/* -mtime +100 -exec rm {} \;
+# -----
+#
+# # change user to root and chmod 755 docker_backup
+# 
+#############################################
+# Could also see about automating (optional) docker container upgrades
+# with docker compose pull, but this could cause issues depending on which 
+# docker compose we are targetting. Better to use something like watchtower
+# with NOTIFY only, and then use the update_XXXX.sh script so that a backup 
+# of the data is run before the upgrade so that it can easily be restored if
+# there are any issues.
+##############################################
+
+
+
 
 
 echo "Remember to logoff/reboot for the changes to take effect."
