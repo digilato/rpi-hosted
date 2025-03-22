@@ -23,11 +23,7 @@ curl -sSL https://get.docker.com | sh || error "Failed to install Docker."
 sudo usermod -aG docker $USER || error "Failed to add user to the Docker usergroup."
 
 # mkdir for volume binding which is easier to backup with cron and tar than docker volumes
-# However, best practice is to place /var/lib/docker on a separate partition so changing to place
-# directory in /var/lib/docker and create a symlink so existing compose configurations are not broken
-# sudo mkdir /docker_bind || error "Failed to add directory for binding docker volumes."
-sudo mkdir /var/lib/docker/docker_bind || error "Failed to add directory for binding docker data."
-sudo ln -s /var/lib/docker/docker_bind /docker_bind || error "Failed to create symlink for binding docker data."
+sudo mkdir /docker_bind || error "Failed to add directory for binding docker data."
 
 
 #############################################
