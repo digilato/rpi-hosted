@@ -1,0 +1,24 @@
+version: '3'
+services:
+  nginxproxymanager:
+    image: 'lscr.io/linuxserver/prowlarr:latest'
+    container_name: prowlarr
+    environment:
+      - PUID=1036
+      - PGID=users
+      - TZ=America/Toronto
+    
+    ports:
+      - '9696:9696'
+      # Add any other Stream port you want to expose
+      # - '21:21' # FTP
+  
+    volumes:
+      - '/docker_bind/prowlarr/config:/config'
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "/bin/check-health"]
+      interval: 10s
+      timeout: 3s

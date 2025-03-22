@@ -1,0 +1,2 @@
+Creates an autoamted server with sonarr, radarr, prowlarr, and overseerr.
+Also optionally adds gluetun to place everything behind a VPN. Gluetun supports a bunch of VPNs. Please reference glueton for available configuration options. This is just what worked for me.

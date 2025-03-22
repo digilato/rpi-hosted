@@ -51,7 +51,7 @@ WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD='Pa55w0rd!'  #password for SMTP au
 # Advanced variables to allow for portability without having to edit scripts
 # Will only monitor for new images, send notifications and invoke the pre-check/post-check hooks, but will not update the containers
 WATCHTOWER_MONITOR_ONLY='true' # set to false to automatically update images if using :latest tag
-WATCHTOWER_CLEANUP='false' #removes old images after updating
+WATCHTOWER_CLEANUP='true' #removes old images after updating
 
 EOL
   fi

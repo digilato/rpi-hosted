@@ -1,0 +1,194 @@
+# The Arrs Stack
+# prowlarr - sonarr - radarr - overseerr - readarr - qbittorrent
+# GREAT REFERECE https://gist.github.com/stravos97/5c2159d4fb8eb33df75bb4700713e249
+# Article https://www.simplehomelab.com/gluetun-docker-guide/
+
+
+services:
+  gluetun:
+    image: qmcgaw/gluetun:v3
+    container_name: gluetun
+    hostname: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8080:8080 # qbittorrent
+      - 8989:8989 # Sonarr
+      - 7878:7878 # Radarr
+      - 8787:8787 # Readarr
+      - 5055:5055 # Overseerr
+      - 9696:9696 # Prowlarr
+    volumes:
+      - '${CONFIG_DIR}/gluetun:/gluetun'
+    environment:
+      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=${VPN_TYPE}
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - TZ=${TIMEZONE}
+      - SERVER_COUNTRIES=${SERVER_COUNTRIES}
+      - FIREWALL_OUTBOUND_SUBNETS=${FIREWALL_OUTBOUND_SUBNETS}
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    labels:
+      autoheal-app: true
+    network_mode: "service:gluetun"
+    environment:
+      - PGID=${GROUP_ID}
+      - PUID=${USER_ID}
+      - TZ=${TIMEZONE}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - WEBUI_PORT=8080
+    volumes:
+      - '${CONFIG_DIR}/qbittorrent/config:/config'
+      - '${MEDIA_DIR}/torrents/servarr:/data/torrents'
+    restart: unless-stopped
+    healthcheck: # https://github.com/qdm12/gluetun/issues/641#issuecomment-933856220
+      test: "curl -sf https://example.com  || exit 1"
+      interval: 1m
+      timeout: 10s
+      retries: 1
+
+
+  prowlarr:
+    image: 'lscr.io/linuxserver/prowlarr:latest'
+    container_name: prowlarr
+    labels:
+      autoheal-app: true
+    network_mode: "service:gluetun"
+    environment:
+      - PGID=${GROUP_ID}
+      - PUID=${USER_ID}
+      - TZ=${TIMEZONE}
+      - LOG_LEVEL=${LOG_LEVEL}
+    volumes:
+      - '${CONFIG_DIR}/prowlarr/config:/config'
+      - '${CONFIG_DIR}/prowlarr/backup:/backup'
+      - '${MEDIA_DIR}/torrents/servarr:/data/torrents'
+    restart: unless-stopped
+    healthcheck: 
+      test: "curl -sf https://example.com  || exit 1"
+      interval: 1m
+      timeout: 10s
+      retries: 1
+    
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest 
+    container_name: sonarr
+    labels:
+      autoheal-app: true
+    network_mode: "service:gluetun"
+    environment:
+      - PGID=${GROUP_ID}
+      - PUID=${USER_ID}
+      - TZ=${TIMEZONE}
+      - LOG_LEVEL=${LOG_LEVEL}
+    volumes:
+      - '${CONFIG_DIR}/sonarr/config:/config'
+      - '${CONFIG_DIR}/sonarr/backup:/backup'
+      - '${MEDIA_DIR}/torrents/servarr:/data/torrents'
+      - '${MEDIA_DIR}/tvshows:/data/tvshows'
+    restart: unless-stopped
+    healthcheck:
+      test: "curl -sf https://example.com  || exit 1"
+      interval: 1m
+      timeout: 10s
+      retries: 1
+
+
+
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    labels:
+      autoheal-app: true
+    network_mode: "service:gluetun"
+    environment:
+      - PGID=${GROUP_ID}
+      - PUID=${USER_ID}
+      - TZ=${TIMEZONE}
+      - LOG_LEVEL=${LOG_LEVEL}
+    volumes:
+      - '${CONFIG_DIR}/radarr/config:/config'
+      - '${CONFIG_DIR}/radarr/backup:/backup'
+      - '${MEDIA_DIR}/torrents/servarr:/data/torrents'
+      - '${MEDIA_DIR}/movies:/data/movies'
+    restart: unless-stopped
+    healthcheck: 
+      test: "curl -sf https://example.com  || exit 1"
+      interval: 1m
+      timeout: 10s
+      retries: 1
+
+
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    labels:
+      autoheal-app: true
+    network_mode: "service:gluetun"
+    environment:
+      - PGID=${GROUP_ID}
+      - PUID=${USER_ID}
+      - TZ=${TIMEZONE}
+      - LOG_LEVEL=${LOG_LEVEL}
+    volumes:
+      - '${CONFIG_DIR}/readarr/config:/config'
+      - '${CONFIG_DIR}/readarr/backup:/backup'
+      - '${MEDIA_DIR}/torrents/servarr:/data/torrents'
+      - '${MEDIA_DIR}/books:/data/books'
+    restart: unless-stopped
+    healthcheck:
+      test: "curl -sf https://example.com  || exit 1"
+      interval: 1m
+      timeout: 10s
+      retries: 1
+
+
+
+
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    labels:
+      autoheal-app: true
+    network_mode: "service:gluetun"
+    environment:
+      - PGID=${GROUP_ID}
+      - PUID=${USER_ID}
+      - TZ=${TIMEZONE}
+      - LOG_LEVEL=${LOG_LEVEL}
+    volumes:
+      - '${CONFIG_DIR}/overseerr/config:/app/config'
+    restart: unless-stopped
+    healthcheck:
+      test: "wget -nv -t1 --output-document=/dev/null https://example.com &> /dev/null || exit 1"
+      interval: 1m
+      timeout: 10s
+      retries: 1
+
+
+
+  autoheal:
+    container_name: autoheal
+    deploy:
+      replicas: 1
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal-app
+    image: willfarrell/autoheal:latest
+    network_mode: none
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+

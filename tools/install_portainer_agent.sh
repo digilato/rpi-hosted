@@ -17,4 +17,4 @@ function check_internet() {
 
 check_internet
 
-sudo docker run -d -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent:2.11.1-alpine || error "Failed to execute newer version of Portainer Agent!"
+sudo docker run -d -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent:2.27.2-alpine || error "Failed to execute newer version of Portainer Agent!"
