@@ -23,4 +23,4 @@ portainer_name=`docker ps | grep portainer/agent | awk '{print $2}'`
 sudo docker stop $portainer_pid || error "Failed to stop portainer!"
 sudo docker rm $portainer_pid || error "Failed to remove portainer container!"
 sudo docker rmi $portainer_name || error "Failed to remove/untag images from the container!"
-sudo docker run -d -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent:latest || error "Failed to execute newer version of Portainer Agent!"
+sudo docker run -d -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent:2.45.2 || error "Failed to execute newer version of Portainer Agent!"
